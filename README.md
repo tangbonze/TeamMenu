@@ -40,6 +40,12 @@ cd TeamMenu
 
 产物：`../outputs/TeamMenu.app`（脚本会自动编译、生成图标、ad-hoc 签名）
 
+默认构建当前机器架构；如需 **通用二进制**（Apple Silicon + Intel）：
+
+```bash
+UNIVERSAL=1 ./build.sh
+```
+
 运行：
 
 ```bash
@@ -149,6 +155,12 @@ cd TeamMenu
 ```
 
 Output: `../outputs/TeamMenu.app` (the script compiles, generates the icon and ad-hoc signs the bundle)
+
+By default it builds for the current architecture. For a **universal binary** (Apple Silicon + Intel):
+
+```bash
+UNIVERSAL=1 ./build.sh
+```
 
 Run:
 
