@@ -14,7 +14,19 @@ rm -rf "$BUILD_DIR" "$OUT_APP"
 mkdir -p "$BUILD_DIR" "$OUT_APP/Contents/MacOS" "$OUT_APP/Contents/Resources"
 
 echo "==> Compiling $SRC ..."
-swiftc -O -parse-as-library -module-cache-path "$BUILD_DIR/module-cache" -o "$BUILD_DIR/TeamMenu" "$SRC"
+if [ "${UNIVERSAL:-0}" = "1" ]; then
+  echo "    universal build (arm64 + x86_64) ..."
+  if swiftc -O -parse-as-library -target arm64-apple-macosx13.0 -module-cache-path "$BUILD_DIR/mc-arm" -o "$BUILD_DIR/TeamMenu-arm64" "$SRC" >"$BUILD_DIR/build-arm64.log" 2>&1 \
+     && swiftc -O -parse-as-library -target x86_64-apple-macosx13.0 -module-cache-path "$BUILD_DIR/mc-x86" -o "$BUILD_DIR/TeamMenu-x86" "$SRC" >"$BUILD_DIR/build-x86_64.log" 2>&1; then
+    lipo -create -output "$BUILD_DIR/TeamMenu" "$BUILD_DIR/TeamMenu-arm64" "$BUILD_DIR/TeamMenu-x86"
+    echo "    universal: $(lipo -info "$BUILD_DIR/TeamMenu" | sed 's/.*are: //')"
+  else
+    echo "    universal build failed, falling back to host arch (see build/*.log)"
+    swiftc -O -parse-as-library -module-cache-path "$BUILD_DIR/module-cache" -o "$BUILD_DIR/TeamMenu" "$SRC"
+  fi
+else
+  swiftc -O -parse-as-library -module-cache-path "$BUILD_DIR/module-cache" -o "$BUILD_DIR/TeamMenu" "$SRC"
+fi
 cp "$BUILD_DIR/TeamMenu" "$OUT_APP/Contents/MacOS/TeamMenu"
 
 echo "==> Icon ..."
