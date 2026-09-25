@@ -739,6 +739,8 @@ struct TeamMenuApp: App {
     init() {
         let s = Store()
         _store = StateObject(wrappedValue: s)
+        // 确保不显示在 Dock（与 Info.plist 的 LSUIElement 双重保险）
+        NSApplication.shared.setActivationPolicy(.accessory)
         s.start()
     }
 
