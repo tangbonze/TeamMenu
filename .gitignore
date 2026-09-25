@@ -1,0 +1,16 @@
+# Build artifacts
+build/
+*.app
+*.icns.tmp
+
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.pyc
+
+# Xcode
+DerivedData/
+*.xcuserstate

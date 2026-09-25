@@ -1,0 +1,6 @@
+{
+  "api_key": "sk-teamo-xxxxxxxx",
+  "base_url": "https://api.teamorouter.cn/v1",
+  "refresh_interval": 60,
+  "username": "18610030711"
+}
